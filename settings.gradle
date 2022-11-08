@@ -1,0 +1,5 @@
+rootProject.name = 'gRPC-Java-Study'
+include 'user-server'
+include 'user-client'
+include 'user-api'
+

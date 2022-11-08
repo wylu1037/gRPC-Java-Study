@@ -1,0 +1,9 @@
+description = "user-api"
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+    implementation "io.grpc:grpc-stub"
+    implementation "io.grpc:grpc-protobuf"
+    implementation "io.grpc:grpc-netty"
+}

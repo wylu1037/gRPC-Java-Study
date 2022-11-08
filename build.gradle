@@ -1,0 +1,145 @@
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
+
+buildscript {
+    ext {
+        protobufVersion = '0.8.18'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "com.google.protobuf:protobuf-gradle-plugin:${protobufVersion}"
+    }
+}
+
+plugins {
+    id 'java'
+    id 'java-library'
+    id 'io.spring.dependency-management' version "1.0.12.RELEASE"
+    id 'org.springframework.boot' version '2.4.0'
+}
+
+group 'cn.edu.hust.grpc'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+allprojects {
+    repositories {
+        maven {
+            url = uri('http://192.168.1.20:8181/repository/maven-public/')
+            allowInsecureProtocol = true
+        }
+        mavenCentral()
+        mavenLocal()
+        gradlePluginPortal()
+    }
+
+    tasks.withType(JavaCompile) {
+        options.encoding("utf-8")
+    }
+
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+// 版本号变量管理
+ext {
+    lib = [
+            jupiter: '5.9.0',
+            lombok: '1.18.24',
+            grpc: "1.50.2",
+            slf4j: "1.7.36",
+            logback: "1.2.11",
+            protobufjavaformat: "1.4"
+    ]
+    gRPC = [
+            protoc: '3.2.0',
+            protocgen: '1.4.0'
+    ]
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'java-library'
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'com.google.protobuf'
+
+    sourceSets {
+        main {
+            java {
+                srcDirs = ['src/main/java']
+            }
+            resources {
+                srcDirs = ['src/main/resources']
+            }
+            proto {
+                srcDirs = ['src/main/proto']
+            }
+        }
+
+        test {
+            java {
+                srcDirs = ['src/test']
+            }
+        }
+    }
+
+    protobuf {
+        // 插件查找protoc编译器的path
+        protoc {
+            artifact = "com.google.protobuf:protoc:${gRPC.protoc}"
+        }
+        // 指定protoc运行插件
+        plugins {
+            grpc {
+                artifact = "io.grpc:protoc-gen-grpc-java:${gRPC.protocgen}"
+            }
+        }
+        // 定义代码生成任务
+        generateProtoTasks {
+            all()*.plugins {
+                grpc {}
+            }
+        }
+        generatedFilesBaseDir = "$projectDir/src/generated"
+    }
+
+    // 依赖管理
+    dependencyManagement {
+        // BOM: bill of materials，物料清单
+        imports {
+            mavenBom(SpringBootPlugin.BOM_COORDINATES)
+        }
+        dependencies {
+            dependency "org.projectlombok:lombok:${lib.lombok}"
+            dependency "org.junit.jupiter:junit-jupiter-api:${lib.jupiter}"
+            dependency "org.junit.jupiter:junit-jupiter-engine:${lib.jupiter}"
+            dependency "io.grpc:grpc-stub:${lib.grpc}"
+            dependency "io.grpc:grpc-protobuf:${lib.grpc}"
+            dependency "io.grpc:grpc-netty:${lib.grpc}"
+            dependency "io.grpc:grpc-all:${lib.grpc}"
+            dependency "org.slf4j:slf4j-api:${lib.slf4j}"
+            dependency "ch.qos.logback:logback-classic:${lib.logback}"
+            dependency "ch.qos.logback:logback-core:${lib.logback}"
+            dependency "com.googlecode.protobuf-java-format:protobuf-java-format:${lib.protobufjavaformat}"
+        }
+    }
+
+    // 引入不同项目公共依赖
+    dependencies {
+        implementation "com.googlecode.protobuf-java-format:protobuf-java-format"
+        implementation "org.springframework.boot:spring-boot-starter"
+        annotationProcessor 'org.projectlombok:lombok'
+        compileOnly 'org.projectlombok:lombok'
+        testAnnotationProcessor 'org.projectlombok:lombok'
+        testCompileOnly 'org.projectlombok:lombok'
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
