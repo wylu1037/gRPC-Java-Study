@@ -72,6 +72,7 @@ subprojects {
         main {
             java {
                 srcDirs = ['src/main/java']
+                exclude 'src/generated/**'
             }
             resources {
                 srcDirs = ['src/main/resources']
@@ -137,6 +138,13 @@ subprojects {
         compileOnly 'org.projectlombok:lombok'
         testAnnotationProcessor 'org.projectlombok:lombok'
         testCompileOnly 'org.projectlombok:lombok'
+    }
+
+    /*tasks.withType(JavaCompile) {
+        options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+    }*/
+    tasks.withType(JavaCompile) {
+        options.compilerArgs << "-Xlint:deprecation"
     }
 }
 
