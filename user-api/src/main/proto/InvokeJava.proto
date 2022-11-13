@@ -1,0 +1,19 @@
+syntax="proto3";
+
+package invoke;
+option go_package="gRPC-Go-Study/invoke";
+option java_package="cn.edu.hust.grpc.api.user";
+
+service IInvokeJava {
+  rpc invokeCrossLanguage (InvokeRequest) returns (InvokeResponse);
+}
+
+message InvokeRequest {
+  string identity = 1;
+  string target = 2;
+}
+
+message InvokeResponse {
+  string result = 1;
+  int32 code = 2;
+}
