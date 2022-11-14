@@ -29,7 +29,7 @@ repositories {
 allprojects {
     repositories {
         maven {
-            url = uri('http://192.168.1.20:8181/repository/maven-public/')
+            url = uri('http://maven.aliyun.com/nexus/content/groups/public')
             allowInsecureProtocol = true
         }
         mavenCentral()
@@ -59,6 +59,9 @@ ext {
             protoc: '3.2.0',
             protocgen: '1.4.0'
     ]
+	nacos = [
+	        client: '1.0.0'
+	]
 }
 
 subprojects {
@@ -127,6 +130,7 @@ subprojects {
             dependency "ch.qos.logback:logback-classic:${lib.logback}"
             dependency "ch.qos.logback:logback-core:${lib.logback}"
             dependency "com.googlecode.protobuf-java-format:protobuf-java-format:${lib.protobufjavaformat}"
+			dependency "com.alibaba.nacos:nacos-client:${nacos.client}"
         }
     }
 

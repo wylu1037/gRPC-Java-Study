@@ -1,0 +1,13 @@
+description = "grpc-registry-nacos"
+
+dependencies {
+	testImplementation 'org.junit.jupiter:junit-jupiter-api'
+	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+	implementation "ch.qos.logback:logback-classic"
+	implementation "ch.qos.logback:logback-core"
+	implementation "com.alibaba.nacos:nacos-client"
+	implementation "io.grpc:grpc-stub"
+	implementation "io.grpc:grpc-protobuf"
+	implementation "io.grpc:grpc-netty"
+	implementation "io.grpc:grpc-all"
+}

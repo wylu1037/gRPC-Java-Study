@@ -31,3 +31,6 @@ Root project 'gRPC-Java-Study'
 
 ## 📖规范
 暂无
+
+## 整合nacos
+参考：https://github.dev/nacos-group/grpc-java-registry-nacos
