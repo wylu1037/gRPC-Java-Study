@@ -2,6 +2,7 @@ description = "user-client"
 
 dependencies {
     api project(':user-api')
+    api project(':grpc-registry-nacos')
     testImplementation 'org.junit.jupiter:junit-jupiter-api'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
     implementation "io.grpc:grpc-stub"

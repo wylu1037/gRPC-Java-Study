@@ -9,11 +9,12 @@ import io.grpc.Server;
 import io.grpc.ServerServiceDefinition;
 import io.grpc.netty.NettyServerBuilder;
 import io.grpc.util.MutableHandlerRegistry;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Grpc Server, 注册服务到nacos中
@@ -96,5 +97,19 @@ public class GrpcServer {
 				logger.error("grpc server started error, msg: {}", e.getMessage());
 			}
 		}
+	}
+
+	public void stop() {
+		if (!started) {
+			return;
+		}
+		try {
+			// 关闭端口，不关闭线程池
+			logger.info("Stop the http rest server at port {}", port);
+			server.shutdown();
+		} catch (Exception e) {
+			logger.error("Stop the http rest server at port " + port + " error !", e);
+		}
+		started = false;
 	}
 }

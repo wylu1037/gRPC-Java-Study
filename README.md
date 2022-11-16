@@ -34,3 +34,21 @@ Root project 'gRPC-Java-Study'
 
 ## 整合nacos
 参考：https://github.dev/nacos-group/grpc-java-registry-nacos
+
+前置条件
+
+| 必须项          | 说明      |
+|--------------|---------|
+| Nacos Server | nacos服务 |
+
+
+
+引入依赖
+```groovy
+dependencies {
+    implementation "com.alibaba.nacos:nacos-client"
+}
+```
+步骤：
++ 重写NameResolver
++ 重写NameResolverProvider
